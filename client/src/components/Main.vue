@@ -189,4 +189,9 @@ export default {
   float: right;
   margin-left: 0.5em;
 }
+
+body {
+  background: rgb(251,251,63);
+  background: radial-gradient(circle, rgba(251,251,63,1) 0%, rgba(252,135,70,1) 100%);
+}
 </style>

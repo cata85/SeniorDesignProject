@@ -1,4 +1,7 @@
 # client
+```
+cd client
+```
 
 ## Project setup
 ```
