@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-10">
+      <div id="col-fix" class="col-sm-10">
         <h1 id="title">WhichBee</h1>
         <hr><br><br>
         <alert :message=message v-if="showMessage"></alert>
@@ -14,7 +14,7 @@
           </button>
         </div>
         <br><br>
-        <table class="table table-hover">
+        <!-- <table class="table table-hover">
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -36,7 +36,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
       </div>
     </div>
     <b-modal ref="addUploadModal"
@@ -65,12 +65,14 @@
             <b-button type="reset" variant="danger" class="submission_btn">Reset</b-button>
         </b-form>
     </b-modal>
+    <grid></grid>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Alert from './Alert.vue';
+import Grid from './Grid.vue';
 
 export default {
   data() {
@@ -86,6 +88,7 @@ export default {
   },
   components: {
     alert: Alert,
+    grid: Grid,
   },
   methods: {
     trigger() {
@@ -167,6 +170,11 @@ export default {
 
 
 <style>
+#col-fix {
+  max-width: 100%;
+  flex: 100%;
+}
+
 #title {
   text-align: center;
   font-size: 5em;
