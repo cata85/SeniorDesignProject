@@ -47,7 +47,7 @@ export default {
     this.$nextTick(function () {
       const el = this.getElement();
       this.name = this.getImgId(this.id);
-      setTimeout(() => { el.classList.add('fadeTag'); }, this.id * 200);
+      setTimeout(() => { el.classList.add('fadeTag'); }, this.id * 100);
     });
   },
 };
