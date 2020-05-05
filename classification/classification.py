@@ -7,6 +7,7 @@ import keras
 import random
 
 from sklearn import svm, datasets
+from skimage.transform import resize
 from sklearn.utils import class_weight
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -80,7 +81,15 @@ def main(op):
         save_model(model)
     if op == 'load':
         model = load_model()
-        print('done')
+        path = "C:/Users/carte/Desktop/BeeMachine/Bombus_images/Bumble_iNat_BugGuide_BBW/Bombus_affinis/0K9KLKWKIKT0UQA09QZSEQLSBQHS6QD0KKPKQKNKHKT00KPKLKO05QNK6QHSVQOKKKUKRK6K5Q10HK2K0KV00KA0SKNK.jpg" # Affinis
+        path2 = "C:/Users/carte/Desktop/BeeMachine/Bombus_images/Bumble_iNat_BugGuide_BBW/Bombus_citrinus/1RLQWRJK1RHQARRQUR80JQX0YQI0CQ20Q0XQR090FQU000P0K020K0E0L0SQJR20JRLQTQ40000Q3RW0.jpg"           # Citrinus
+        path3 = "C:/Users/carte/Desktop/BeeMachine/Bombus_images/Bumble_iNat_BugGuide_BBW/Bombus_huntii/1HMHDHXHRRRLVZXLVZ5L9Z8LUZRLVHIHTHIHJH5LWZNHNZ6HBZ8LPZRL9ZHLPZZL6Z4LUZ7L9Z2H1Z9HDHKL1ZMLBZ.jpg"   # Huntii
+        img_array = plt.imread(path3)
+        img_array = resize(img_array, (IMG_SIZE, IMG_SIZE,3))
+        img_array = np.array([img_array,])
+        model_out = model.predict(img_array)[0,:]
+        probabilities = np.argsort(model_out)
+        print(f'1: {CATEGORIES[probabilities[-1]]}\n2: {CATEGORIES[probabilities[-2]]}\n3: {CATEGORIES[probabilities[-3]]}')
     pass
 
 
@@ -168,13 +177,20 @@ if __name__ == '__main__':
 
 
 # NOTES
+# from skimage.transform import resize
+# path = "C:/Users/carte/Desktop/BeeMachine/Bombus_images/Bumble_iNat_BugGuide_BBW/Bombus_affinis/0K9KLKWKIKT0UQA09QZSEQLSBQHS6QD0KKPKQKNKHKT00KPKLKO05QNK6QHSVQOKKKUKRK6K5Q10HK2K0KV00KA0SKNK.jpg"
+# model = tf.keras.models.load_model('C:/Users/carte/Desktop/BeeMachine/model_InceptionV3_04-12-2020.h5')
 # data = []
 # img_array = cv2.imread(path)   
 # img_array = cv2.resize(img_array, (299, 299))
 # img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB) 
+# img_array = img_array.astype('float32')
 # data.append(img_array)
 # data = np.array(data).reshape(-1, 299, 299, 3)
 # data = tf.cast(data, dtype=tf.float32)
 # model_out = model.predict(data) 
 # val = np.argmax(model_out)
 # CATEGORIES[val]
+
+
+# CORRECT
