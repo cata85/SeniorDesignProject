@@ -17,15 +17,38 @@ export default {
   data() {
     return {
       images: [],
+      randInts: [],
+      numImages: 12,
+      imageCategories: ['Bombus affinis', 'Bombus appositus', 'Bombus auricomus', 'Bombus bifarius', 'Bombus bimaculatus', 'Bombus borealis',
+        'Bombus caliginosus', 'Bombus centralis', 'Bombus citrinus', 'Bombus crotchii', 'Bombus cryptarum', 'Bombus fernaldae',
+        'Bombus fervidus', 'Bombus flavifrons', 'Bombus fraternus', 'Bombus frigidus', 'Bombus griseocollis', 'Bombus huntii',
+        'Bombus impatiens', 'Bombus insularis', 'Bombus melanopygus', 'Bombus mixtus', 'Bombus morrisoni', 'Bombus nevadensis',
+        'Bombus occidentalis', 'Bombus pensylvanicus', 'Bombus perplexus', 'Bombus rufocinctus', 'Bombus sandersoni',
+        'Bombus sitkensis', 'Bombus sylvicola', 'Bombus ternarius', 'Bombus terricola', 'Bombus vagans', 'Bombus vandykei', 'Bombus vosnesenskii'],
+      numOfCategories: 36,
     };
   },
   components: {
     imageItem: Image,
   },
   methods: {
-    getTag(key) {
-      return './assets/bumble'.concat(key).concat('.jpg');
+    getTag(index) {
+      const tempName = this.imageCategories[this.randInts[index]];
+      console.log(tempName);
+      console.log(this.randInts[index]);
+      return './assets/Images/'.concat(tempName).concat('.jpg');
     },
+    makeRandom() {
+      const arr = [];
+      while (arr.length < this.numImages + 1) {
+        const r = Math.floor(Math.random() * this.numOfCategories);
+        if (arr.indexOf(r) === -1) arr.push(r);
+      }
+      this.randInts = arr;
+    },
+  },
+  created() {
+    this.makeRandom();
   },
 };
 </script>
