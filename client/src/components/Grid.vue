@@ -3,7 +3,8 @@
       <imageItem v-for="index in 12"
                  :key="index"
                  :id=index.toString()
-                 :imgSrc="getTag(index)">
+                 :imgSrc="getTag(index)"
+                 :imgName="getName(index)">
       </imageItem>
 
     </div>
@@ -19,12 +20,12 @@ export default {
       images: [],
       randInts: [],
       numImages: 12,
-      imageCategories: ['Bombus affinis', 'Bombus appositus', 'Bombus auricomus', 'Bombus bifarius', 'Bombus bimaculatus', 'Bombus borealis',
-        'Bombus caliginosus', 'Bombus centralis', 'Bombus citrinus', 'Bombus crotchii', 'Bombus cryptarum', 'Bombus fernaldae',
-        'Bombus fervidus', 'Bombus flavifrons', 'Bombus fraternus', 'Bombus frigidus', 'Bombus griseocollis', 'Bombus huntii',
-        'Bombus impatiens', 'Bombus insularis', 'Bombus melanopygus', 'Bombus mixtus', 'Bombus morrisoni', 'Bombus nevadensis',
-        'Bombus occidentalis', 'Bombus pensylvanicus', 'Bombus perplexus', 'Bombus rufocinctus', 'Bombus sandersoni',
-        'Bombus sitkensis', 'Bombus sylvicola', 'Bombus ternarius', 'Bombus terricola', 'Bombus vagans', 'Bombus vandykei', 'Bombus vosnesenskii'],
+      imageCategories: ['Bombus Affinis', 'Bombus Appositus', 'Bombus Auricomus', 'Bombus Bifarius', 'Bombus Bimaculatus', 'Bombus Borealis',
+        'Bombus Caliginosus', 'Bombus Centralis', 'Bombus Citrinus', 'Bombus Crotchii', 'Bombus Cryptarum', 'Bombus Fernaldae',
+        'Bombus Fervidus', 'Bombus Flavifrons', 'Bombus Fraternus', 'Bombus Frigidus', 'Bombus Griseocollis', 'Bombus Huntii',
+        'Bombus Impatiens', 'Bombus Insularis', 'Bombus Melanopygus', 'Bombus Mixtus', 'Bombus Morrisoni', 'Bombus Nevadensis',
+        'Bombus Occidentalis', 'Bombus Pensylvanicus', 'Bombus Perplexus', 'Bombus Rufocinctus', 'Bombus Sandersoni',
+        'Bombus Sitkensis', 'Bombus Sylvicola', 'Bombus Ternarius', 'Bombus Terricola', 'Bombus Vagans', 'Bombus Vandykei', 'Bombus Vosnesenskii'],
       numOfCategories: 36,
     };
   },
@@ -34,8 +35,6 @@ export default {
   methods: {
     getTag(index) {
       const tempName = this.imageCategories[this.randInts[index]];
-      console.log(tempName);
-      console.log(this.randInts[index]);
       return './assets/Images/'.concat(tempName).concat('.jpg');
     },
     makeRandom() {
@@ -45,6 +44,9 @@ export default {
         if (arr.indexOf(r) === -1) arr.push(r);
       }
       this.randInts = arr;
+    },
+    getName(index) {
+      return this.imageCategories[this.randInts[index]];
     },
   },
   created() {
@@ -59,8 +61,6 @@ export default {
     display: grid;
     grid-template-columns: 14em 14em 14em 14em 14em 14em;
     grid-template-rows: 14em 14em;
-    /* grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
-    grid-template-rows: 0.06fr 0.06fr; */
     grid-column-gap: 0.5em;
     grid-row-gap: 0.5em;
     justify-content: center;

@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 client/node_modules/
 env/
+server/uploads/

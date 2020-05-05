@@ -128,9 +128,9 @@ export default {
         },
       };
       axios.post(path, payload, config)
-        .then(() => {
+        .then((res) => {
           this.getImages();
-          this.message = 'Image added!';
+          this.message = res.data.message;
           this.showMessage = true;
         })
         .catch((error) => {

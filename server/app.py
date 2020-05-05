@@ -2,7 +2,9 @@ from datetime import timedelta
 from flask import Flask, jsonify, request, current_app, make_response, send_file
 from flask_cors import CORS
 from functools import update_wrapper
+from json import dumps
 import os
+from requests import post
 import time
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.utils import secure_filename
@@ -17,6 +19,9 @@ app.config.from_object(__name__)
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+POST_URL = 'http://127.0.0.1:6969/classify'
+headers = {'content-type': 'application/json'}
 
 IMAGES = [
     {
@@ -89,53 +94,22 @@ def all_images():
     if request.method == 'POST':
         files = dict(request.files)
         for file in files:
-            filename = secure_filename(files[file].filename)
-            # files[file].save(os.path.join('uploads', filename))             Unsave once ready.
-            IMAGES.append({
-                'name': filename,
-                'path': os.path.join('uploads', filename),
-                'time': time.time()
-            })
-        response_object['message'] = 'Image added!'
+            filename = time.strftime("%Y%m%d-%H%M%S.jpg")            # NOTES, may need to remove the index 0 on unix systems.
+            files[file][0].save(os.path.join('uploads', filename))             # Unsave once ready.
+            # IMAGES.append({
+            #     'name': filename,
+            #     'path': os.path.join('uploads', filename),
+            #     'time': time.time()
+            # })
+            my_data = {'filename': filename}
+            response = post(POST_URL, data=dumps(my_data), headers=headers)
+            print(response.text)
+            response = response.json()['message'].split('_')
+            message = response[0] + ' ' + response[1].capitalize()
+        response_object['message'] = message
     else:
         response_object['images'] = IMAGES
     return jsonify(response_object)
-
-
-# @app.route('/get_image')
-# def get_image():
-#     if request.args.get('type') == '1':
-#        filename = 'ok.gif'
-#     else:
-#        filename = 'error.gif'
-#     return send_file(filename, mimetype='image/gif')
-
-
-# @app.route('/prediction/<filename>')
-# def prediction(filename):
-#     #Step 1
-#     my_image = plt.imread(os.path.join('uploads', filename))
-#     #Step 2
-#     my_image_re = resize(my_image, (32,32,3))
-    
-#     #Step 3
-#     with graph.as_default():
-#       set_session(sess)
-#       probabilities = model.predict(np.array( [my_image_re,] ))[0,:]
-#       print(probabilities)
-# #Step 4
-#       number_to_class = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-#       index = np.argsort(probabilities)
-#       predictions = {
-#         "class1":number_to_class[index[9]],
-#         "class2":number_to_class[index[8]],
-#         "class3":number_to_class[index[7]],
-#         "prob1":probabilities[index[9]],
-#         "prob2":probabilities[index[8]],
-#         "prob3":probabilities[index[7]],
-#       }
-# #Step 5
-#     return render_template('predict.html', predictions=predictions)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 <template>
   <div class="grid-item" :id="id" @mouseover="mouseOver" @mouseleave="mouseLeave">
-    <img :src="imgSrc" class="_img" :id="getImgId(id)"/>
+    <img :src="imgSrc" :name="imgName" class="_img" :id="getImgId(id)"/>
     <div class="imgText">{{ displayName }}</div>
   </div>
 </template>
@@ -17,10 +17,13 @@ export default {
       type: String,
       required: true,
     },
+    imgName: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
-      name: '',
       displayName: '',
     };
   },
@@ -30,7 +33,7 @@ export default {
     },
     mouseOver() {
       const el = this.getElement();
-      this.displayName = this.name;
+      this.displayName = this.imgName;
       el.classList.add('imgOver');
     },
     mouseLeave() {
@@ -44,9 +47,8 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function nextTick() {
       const el = this.getElement();
-      this.name = this.getImgId(this.id);
       setTimeout(() => { el.classList.add('fadeTag'); }, this.id * 100);
     });
   },
@@ -71,6 +73,7 @@ export default {
     grid-row: 1;
     grid-column: 1;
     align-self: center;
+    text-align: center;
   }
 
   ._img {
