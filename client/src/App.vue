@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div id="backgroundDiv">
-      <img id="backgroundImg" src="honeycomb.png"/>
-    </div>
+    <img id="backgroundImg" src="honeycomb.png"/>
     <router-view/>
   </div>
 </template>
@@ -12,19 +10,12 @@
   margin-top: 60px
 }
 
-#backgroundDiv {
-  position: absolute;
-  height: 20%;
+#backgroundImg {
+  height: 100%;
   width: 100%;
+  position: absolute;
   top: 0;
   left: 0;
-  overflow: hidden;
-}
-
-#backgroundImg {
-  height: 150%;
-  width: 100%;
-  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 0.1%, transparent);
-  mask-image: linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 0.1%, transparent);
+  opacity: 0.1;
 }
 </style>
