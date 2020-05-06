@@ -3,7 +3,12 @@
     <div class="row">
       <div id="col-fix" class="col-sm-10">
         <h1 id="title">WhichBee</h1>
-        <hr><br><br>
+        <hr>
+        <h4 id="instructions">
+          Upload photo of a Bumblebee to get it's species.
+          (Make sure the wings are in clear view)
+        </h4>
+        <br><br>
         <div v-if="showMessage">
           <!-- <img :src="message" /> -->
           <alert :imgSrc="imgSrc" :imgName="imgName" :imgId="imgId"></alert>
@@ -167,6 +172,10 @@ export default {
 #title {
   text-align: center;
   font-size: 5em;
+}
+
+#instructions {
+  text-align: center;
 }
 
 #upload_btn {
