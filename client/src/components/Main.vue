@@ -4,7 +4,11 @@
       <div id="col-fix" class="col-sm-10">
         <h1 id="title">WhichBee</h1>
         <hr><br><br>
-        <alert :message=message v-if="showMessage"></alert>
+        <div v-if="showMessage">
+          <!-- <img :src="message" /> -->
+          <alert :imgSrc="imgSrc" :imgName="imgName" :imgId="imgId"></alert>
+        </div>
+        <!-- <img v-if="showMessage" :src="message" /> -->
         <div style="text-align:center;">
           <button type="button"
                   id="upload_btn"
@@ -14,29 +18,6 @@
           </button>
         </div>
         <br><br>
-        <!-- <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Path</th>
-              <th scope="col">Time</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(image, index) in images" :key="index">
-              <td>{{ image.name }}</td>
-              <td>{{ image.path }}</td>
-              <td>{{ image.time }}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-warning btn-sm">Update</button>
-                  <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
       </div>
     </div>
     <b-modal ref="addUploadModal"
@@ -81,9 +62,11 @@ export default {
       attachments: [],
       files: new FormData(),
       tempFiles: {},
-      message: '',
+      imgSrc: '',
       imagesText: '',
       showMessage: false,
+      imgId: '',
+      imgName: '',
     };
   },
   components: {
@@ -126,11 +109,17 @@ export default {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        encoding: 'binary',
+        responseType: 'arraybuffer',
       };
       axios.post(path, payload, config)
         .then((res) => {
           this.getImages();
-          this.message = res.data.message;
+          const img = 'data:image/jpeg;base64,'.concat(Buffer.from(res.data, 'utf-8').toString('base64'));
+          const tempName = res.headers['x-suggested-filename'];
+          this.imgName = tempName.replace('.jpg', '');
+          this.imgId = tempName.replace('.jpg', '');
+          this.imgSrc = img;
           this.showMessage = true;
         })
         .catch((error) => {

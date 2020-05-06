@@ -18,8 +18,9 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/*': {'origins': '*'}}, expose_headers=["x-suggested-filename", "Content-Disposition"])
 
+UPLOAD_PATH = '/mnt/c/Users/carte/Desktop/SeniorDesignProject/server/uploads'
 POST_URL = 'http://127.0.0.1:6969/classify'
 headers = {'content-type': 'application/json'}
 
@@ -87,7 +88,7 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
     return decorator
 
 
-@app.route('/images', methods=['GET', 'POST'])
+@app.route('/images', methods=['POST'])
 @crossdomain(origin='*')
 def all_images():
     response_object = {'status': 'success'}
@@ -96,6 +97,7 @@ def all_images():
         for file in files:
             filename = time.strftime("%Y%m%d-%H%M%S.jpg")            # NOTES, may need to remove the index 0 on unix systems.
             files[file][0].save(os.path.join('uploads', filename))             # Unsave once ready.
+            path = os.path.join(UPLOAD_PATH, filename)
             # IMAGES.append({
             #     'name': filename,
             #     'path': os.path.join('uploads', filename),
@@ -106,10 +108,13 @@ def all_images():
             print(response.text)
             response = response.json()['message'].split('_')
             message = response[0] + ' ' + response[1].capitalize()
-        response_object['message'] = message
-    else:
-        response_object['images'] = IMAGES
-    return jsonify(response_object)
+            new_filename = message + '.jpg'
+        # response_object['message'] = message
+        response_object = send_file(path, mimetype='image/jpg', as_attachment=True, attachment_filename=new_filename, conditional=False)
+        response_object.headers['x-suggested-filename'] = new_filename
+        response_object.headers["Access-Control-Expose-Headers"] = 'x-suggested-filename'
+    # return jsonify(response_object)
+    return response_object
 
 
 if __name__ == '__main__':
